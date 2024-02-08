@@ -9,5 +9,6 @@ urlpatterns = [
     
     
     # path('create-room', views.createForm, name='create-room'),
-    path('roomcreator', views.create_room, name='room-create')
+    path('roomcreator', views.create_room, name='room-create'),
+    path('update-room/<str:pk>/', views.update_room, name='update-room')
 ]

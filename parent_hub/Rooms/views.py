@@ -15,6 +15,21 @@ def create_room(request):
     context = {'form':form}
     return render(request,'Rooms/room_form.html', context)
     
+def update_room(request, pk):
+    """for updating the create room form."""
+    # get room to update by its pk
+    room = Room.objects.get(id=pk)
+    # create an instance of that form attached to that room
+    form = createRoomForm(instance=room) 
+    if request.method == 'POST':
+        # pre-populate form with data from that room
+        form = createRoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()            
+            return redirect('home') # after form submission, redirect to home page.
+        
+    context = {'form':form}
+    return render(request,'Rooms/room_form.html', context)
     
     
 def room(request, pk):
