@@ -5,4 +5,4 @@ from django.http import HttpResponse
 
 def room(request):
     """handle rooms"""
-    return HttpResponse("<h1>Hello, Samuel</h1>")
+    return render(request, 'Rooms/room.html',{})
