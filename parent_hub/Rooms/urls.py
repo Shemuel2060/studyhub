@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path('',views.home, name='home'),
-    path('room/',views.room, name='room'),
+    # dynamic routing to rooms of topics clicked.
+    path('room/<str:pk>/',views.room, name='room'),
 ]
