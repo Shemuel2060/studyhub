@@ -5,7 +5,7 @@ from .models import Topic, Room
 
 def room(request, pk):
     """handle rooms"""
-    space = None
+    
     rooms = Room.objects.all()
     allrooms = {'allrooms':rooms}
     for aroom in allrooms['allrooms']:
