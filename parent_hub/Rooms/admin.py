@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Room, Settings, Post, Topic, Participant
+from .models import Room,Post,Topic
 
 
 # Register your models here.
 
-admin.site.register([Room,Settings,Post, Participant, Topic])
+admin.site.register([Room,Post, Topic])
