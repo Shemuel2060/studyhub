@@ -23,3 +23,8 @@ def home(request):
     rooms = Room.objects.all() # query all topics from db
     context = {'allrooms':rooms}
     return render(request, 'Rooms/home.html', context)
+
+def createForm(request):
+    """create and update a room"""
+    context = {}
+    return render(request,'Rooms/room_form.html', context)

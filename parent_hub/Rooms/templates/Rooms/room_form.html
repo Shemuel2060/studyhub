@@ -1,0 +1,10 @@
+
+{% extends 'parent_hub/base.html' %}
+
+{% block content %} 
+   <form method = "POST" action="{% url 'home' %}"><!--retdirect to home page on submit-->
+        {% csrf_token %}
+        <input type="submit" value="Create Room">
+        <br>
+   </form>
+{% endblock %}
