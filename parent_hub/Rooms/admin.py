@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Rooms, Settings, Posts
+from .models import Room, Settings, Post
 # Register your models here.
 
-admin.site.register([Rooms,Settings,Posts])
+admin.site.register([Room,Settings,Post])
