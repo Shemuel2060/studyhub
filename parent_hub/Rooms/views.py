@@ -1,8 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Topic, Room
 
+from .forms import createRoomForm
 # Create your views here.
 
+def create_room(request):
+    """for rendering the create room form."""
+    form = createRoomForm(request.POST or None) # initialize the form
+    if form.is_valid():
+        form.save()
+        form = createRoomForm() # to clear form fields
+        return redirect('home') # after form submission, redirect to home page.
+        
+    context = {'form':form}
+    return render(request,'Rooms/room_form.html', context)
+    
+    
+    
 def room(request, pk):
     """handle rooms"""
     
@@ -24,7 +38,7 @@ def home(request):
     context = {'allrooms':rooms}
     return render(request, 'Rooms/home.html', context)
 
-def createForm(request):
-    """create and update a room"""
-    context = {}
-    return render(request,'Rooms/room_form.html', context)
+# def createForm(request):
+#     """create and update a room"""
+#     context = {}
+#     return render(request,'Rooms/room_form.html', context)

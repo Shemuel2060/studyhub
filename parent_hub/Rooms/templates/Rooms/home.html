@@ -2,7 +2,7 @@
 {% extends 'parent_hub/base.html' %}
 
 {% block content %} 
-    <a href="{% url 'create-room' %}">Create Room</a>
+    <a href="{% url 'room-create' %}">Create Room</a>
     {% for room in allrooms %}
     <!--routing to the room of the topic...-->
         <span>@{{room.host.username}}</span>

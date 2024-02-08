@@ -2,8 +2,9 @@
 {% extends 'parent_hub/base.html' %}
 
 {% block content %} 
-   <form method = "POST" action="{% url 'home' %}"><!--retdirect to home page on submit-->
+   <form method = "POST" action=""><!--retdirect to same page on submit-->
         {% csrf_token %}
+        {{form.as_p}} <!--use the createRoomForm-->
         <input type="submit" value="Create Room">
         <br>
    </form>
