@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Topic, Room
+from django.db.models import Q # look up queries
 
+from .models import Topic, Room
 from .forms import createRoomForm
 # Create your views here.
 
@@ -55,9 +56,18 @@ def room(request, pk):
 
 def home(request):
     """home - the main app interface"""
-    # render out topics as links to pages for each topic
-    rooms = Room.objects.all() # query all topics from db
     topics = Topic.objects.all() # query all topics from db
+    q = request.GET.get('q') if request.GET.get('q')!=None else ''
+    # if request.GET.get('q')!=None:
+    #     q=request.GET.get('q')
+    # else:
+    #     '' # fails for the home url... localhost:8000 just. WHY?
+    # get only rooms with searched topic names.
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains = q) |
+        Q(name__icontains = q) | # room name
+        Q(description__icontains = q) # room description
+    )
     context = {'allrooms':rooms, 'alltopics':topics}
     return render(request, 'Rooms/home.html', context)
 
