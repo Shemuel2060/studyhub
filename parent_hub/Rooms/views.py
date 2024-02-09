@@ -3,11 +3,15 @@ from django.db.models import Q # look up queries
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.http import HttpResponse
+
+from django.contrib.auth.decorators import login_required # restrict access and permissions
 
 from .models import Topic, Room
 from .forms import createRoomForm
 # Create your views here.
 
+@login_required(login_url='login') # if not logged in, can't create room, redirect to login
 def create_room(request):
     """for rendering the create room form."""
     form = createRoomForm(request.POST or None) # initialize the form
@@ -18,12 +22,19 @@ def create_room(request):
         
     context = {'form':form}
     return render(request,'Rooms/room_form.html', context)
-    
+
+
+@login_required(login_url='login') # if not logged in, can't update room, redirect to login
 def update_room(request, pk):
     """for updating the create room form."""
     # get room to update by its pk
     room = Room.objects.get(id=pk)
     # create an instance of that form attached to that room
+    
+    # restrict non owner from updating a room
+    if request.user != room.host:
+        return HttpResponse('You CANNOT delete since you are not the owner')
+    
     form = createRoomForm(instance=room) 
     if request.method == 'POST':
         # pre-populate form with data from that room
@@ -35,9 +46,16 @@ def update_room(request, pk):
     context = {'form':form}
     return render(request,'Rooms/room_form.html', context)
 
+@login_required(login_url='login') # if not logged in, can't delete room, redirect to login
 def deleteRoom(request, pk):
     """delete room"""
     room = Room.objects.get(id=pk)
+    
+    # restrict non owner from deleting a room
+    if request.user != room.host:
+        return HttpResponse('You CANNOT delete since you are not the owner')
+    
+    
     if request.method == 'POST':
         room.delete() # delete from db
         return redirect('home') # redirect to home page
@@ -59,6 +77,10 @@ def room(request, pk):
 
 def loginPage(request):
     """login page..."""
+    # prevent re-logging in
+    if request.user.is_authenticated:
+        return redirect('home')
+    
     # confirm a post method
     if request.method == 'POST':
         # get entered data
