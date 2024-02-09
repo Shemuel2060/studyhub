@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required # restrict access and permissions
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import Topic, Room
 from .forms import createRoomForm
@@ -85,7 +86,7 @@ def loginPage(request):
     # confirm a post method
     if request.method == 'POST':
         # get entered data
-        name = request.POST.get('username')
+        name = request.POST.get('username').lower()
         pw = request.POST.get('password')
         
         # confirm user exists in the db
@@ -106,7 +107,25 @@ def loginPage(request):
     return render(request, 'Rooms/login_register.html', context)
 
 def registerPage(request):
-    context = {}
+    # initialize the registration form to be seen when empty
+    form = UserCreationForm()
+    if request.method == 'POST':
+        # pass the data to the form
+        form = UserCreationForm(request.POST)
+        # check if form is valid
+        if form.is_valid():
+            # save form without committing it, clean user data
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            # save and commit user 
+            user.save() 
+            # log the user in
+            login(request,user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Something went wrong!')
+            
+    context = {'form':form}
     return render(request, 'Rooms/login_register.html', context)
     
 def logoutUser(request): # does not need a template
