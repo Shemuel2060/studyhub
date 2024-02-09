@@ -68,7 +68,13 @@ def home(request):
         Q(name__icontains = q) | # room name
         Q(description__icontains = q) # room description
     )
-    context = {'allrooms':rooms, 'alltopics':topics}
+    roomcount = rooms.count() # get total rooms
+    topiccount = topics.count() # get total topics
+    context = {
+        'allrooms':rooms, 
+        'alltopics':topics, 
+        'roomcount':roomcount,
+        'topiccount':topiccount}
     return render(request, 'Rooms/home.html', context)
 
 # def createForm(request):

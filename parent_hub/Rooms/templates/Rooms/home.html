@@ -15,6 +15,7 @@
         <div>
             <!--displays all topics, rooms and creators ... in the home feed. -->
             <h5><a href="{% url 'home' %}">All</a></h5>
+            <h6>Total: {{topiccount}} topics</h6>
         </div>
         {% for topic in alltopics %}       
         <div>
@@ -27,6 +28,8 @@
         {% endfor %}
     </div>
     <div class="topics-view-main">
+        <h3>Study Rooms</h3>
+        <h5>Total: {{roomcount}} rooms</h5>
         <a href="{% url 'room-create' %}">Create Room</a>
         <hr>
         {% for room in allrooms %}
