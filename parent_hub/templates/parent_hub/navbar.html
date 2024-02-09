@@ -13,12 +13,21 @@
                 <input type="text" placeholder="search..." 
                 name="q"/>
             </form>
-
         </div>
+        {% if messages %}
+            <div>
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+       
         <div class="navbar-right">
             <ul>
-                <li><a href="/login/">Login</a></li>
-                <li><a href="/register/">Register</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="">Register</a></li>
                 <!-- Add more navigation links as needed -->
             </ul>
         </div>

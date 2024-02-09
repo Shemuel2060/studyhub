@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q # look up queries
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 from .models import Topic, Room
 from .forms import createRoomForm
@@ -54,6 +57,33 @@ def room(request, pk):
         
     return render(request, 'Rooms/room.html',context)
 
+def loginPage(request):
+    """login page..."""
+    # confirm a post method
+    if request.method == 'POST':
+        # get entered data
+        name = request.POST.get('username')
+        pw = request.POST.get('password')
+        
+        # confirm user exists in the db
+        try:
+            user = User.objects.get(username=name)
+        except:
+            messages.error(request, 'User does not exist')
+        # user confirmed to exist, auntheticate
+        user = authenticate(username=name,password=pw) # returns user obj or None
+        if user is not None: # if user != None:
+            # log the user in
+            login(request, user)
+            return redirect('home') # redirect to home page
+        else:
+            messages.error(request,'username or password does not exist')
+            
+    context = {}
+    return render(request, 'Rooms/login_register.html', context)
+    
+    
+    
 def home(request):
     """home - the main app interface"""
     topics = Topic.objects.all() # query all topics from db

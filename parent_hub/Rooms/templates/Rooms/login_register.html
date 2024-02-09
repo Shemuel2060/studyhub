@@ -1,0 +1,15 @@
+
+{% extends 'parent_hub/base.html' %}
+
+{% block content %} 
+   <form method = "POST" action=""><!--retdirect to same page on submit-->
+        {% csrf_token %}
+        <!--using own html forms not django's-->
+        <label for="">username: </label>
+        <input type="text" name="username" placeholder="Enter user name"/>
+        <label for="">password: </label>
+        <input type="password" name="password" placeholder="Enter password"/>
+        <input type="submit" value="Login">
+        <br>
+   </form>
+{% endblock %}
