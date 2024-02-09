@@ -77,6 +77,7 @@ def room(request, pk):
 
 def loginPage(request):
     """login page..."""
+    page = 'login' # used to determine if to render login page or register page.
     # prevent re-logging in
     if request.user.is_authenticated:
         return redirect('home')
@@ -101,6 +102,10 @@ def loginPage(request):
         else:
             messages.error(request,'username or password does not exist')
             
+    context = {'page':page}
+    return render(request, 'Rooms/login_register.html', context)
+
+def registerPage(request):
     context = {}
     return render(request, 'Rooms/login_register.html', context)
     

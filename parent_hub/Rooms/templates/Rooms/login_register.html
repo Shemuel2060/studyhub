@@ -2,14 +2,39 @@
 {% extends 'parent_hub/base.html' %}
 
 {% block content %} 
-   <form method = "POST" action=""><!--retdirect to same page on submit-->
-        {% csrf_token %}
-        <!--using own html forms not django's-->
-        <label for="">username: </label>
-        <input type="text" name="username" placeholder="Enter user name"/>
-        <label for="">password: </label>
-        <input type="password" name="password" placeholder="Enter password"/>
-        <input type="submit" value="Login">
-        <br>
-   </form>
+
+{% if page == 'login' %}
+   <div class="login-page">
+   <!-- login page-->
+      <form method = "POST" action=""><!--retdirect to same page on submit-->
+         {% csrf_token %}
+         <!--using own html forms not django's-->
+         <label for="">username: </label>
+         <input type="text" name="username" placeholder="Enter user name"/>
+         <label for="">password: </label>
+         <input type="password" name="password" placeholder="Enter password"/>
+         <input type="submit" value="Login">
+         <br>
+      </form>
+      <p>Don't have an account?</p>
+      <a href="{% url 'register' %}">Sign Up</a>
+   </div>
+{% else %}
+   <div class="register-page">
+      <!-- register page-->
+         <form method = "POST" action=""><!--retdirect to same page on submit-->
+            {% csrf_token %}
+            <!--using own html forms not django's-->
+            <label for="">username: </label>
+            <input type="text" name="username" placeholder="Enter user name"/>
+            <label for="">password: </label>
+            <input type="password" name="password" placeholder="Enter password"/>
+            <input type="submit" value="Login">
+            <br>
+         </form>
+         <p>Already have an account?</p>
+         <a href="{% url 'login' %}">Login</a>
+   </div>
+{% endif %}
+
 {% endblock %}
