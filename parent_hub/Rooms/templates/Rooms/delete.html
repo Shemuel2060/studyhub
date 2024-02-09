@@ -1,0 +1,12 @@
+
+{% extends 'parent_hub/base.html' %}
+
+{% block content %} 
+   <form method = "POST" action=""><!--redirect to same page on submit-->
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{obj}}"?</p>
+        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+        <input type="submit" value="Confirm">
+        <br>
+   </form>
+{% endblock %}

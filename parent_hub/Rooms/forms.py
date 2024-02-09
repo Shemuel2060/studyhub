@@ -12,3 +12,5 @@ class createRoomForm(forms.ModelForm):
             'description', # short desc about the room
             'topic' # topic emphasis for the room
         ]
+
+# add other forms here...

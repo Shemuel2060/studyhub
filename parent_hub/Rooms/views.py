@@ -30,7 +30,14 @@ def update_room(request, pk):
         
     context = {'form':form}
     return render(request,'Rooms/room_form.html', context)
-    
+
+def deleteRoom(request, pk):
+    """delete room"""
+    room = Room.objects.get(id=pk)
+    if request.method == 'POST':
+        room.delete() # delete from db
+        return redirect('home') # redirect to home page
+    return render(request, 'Rooms/delete.html',{'obj':room})
     
 def room(request, pk):
     """handle rooms"""
@@ -50,7 +57,8 @@ def home(request):
     """home - the main app interface"""
     # render out topics as links to pages for each topic
     rooms = Room.objects.all() # query all topics from db
-    context = {'allrooms':rooms}
+    topics = Topic.objects.all() # query all topics from db
+    context = {'allrooms':rooms, 'alltopics':topics}
     return render(request, 'Rooms/home.html', context)
 
 # def createForm(request):
