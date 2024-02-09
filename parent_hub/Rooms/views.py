@@ -82,7 +82,10 @@ def loginPage(request):
     context = {}
     return render(request, 'Rooms/login_register.html', context)
     
-    
+def logoutUser(request): # does not need a template
+    """log user out.."""
+    logout(request) # deletes all user info if logged in
+    return redirect('home')
     
 def home(request):
     """home - the main app interface"""
