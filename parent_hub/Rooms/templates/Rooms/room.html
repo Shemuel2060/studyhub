@@ -2,5 +2,12 @@
 {% extends 'parent_hub/base.html' %}
 
 {% block content %}
-    <h1>{{room.name}}</h1>    
+    <h1>{{room.name}}</h1>   
+    <p>HOSTED BY</p> 
+    <small>@{{room.host}} {{room.created|timesince}}</small>
+    <p>{{room.description}}</p>
+    <div class="comment-wrapper">
+        <h3>CONVERSATION</h3>
+
+    </div>
 {% endblock %}

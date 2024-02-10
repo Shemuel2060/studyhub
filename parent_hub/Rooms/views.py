@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required # restrict access and permissions
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Topic, Room
+from .models import Topic, Room, Post
 from .forms import createRoomForm
 # Create your views here.
 
@@ -67,12 +67,14 @@ def room(request, pk):
     
     rooms = Room.objects.all()
     allrooms = {'allrooms':rooms}
+    # get messages in a room and order them in last posted
+    # room_messages = room.post_set.all()
     for aroom in allrooms['allrooms']:
         if aroom.id == int(pk):
             context = {'room':aroom}
             break
         else:
-            context={'room':'Welcome to Rooms'}
+            context={'room':'Welcome to Rooms', 'room_messages':room_messages}
         
     return render(request, 'Rooms/room.html',context)
 
