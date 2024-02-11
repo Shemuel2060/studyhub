@@ -3,7 +3,7 @@
 <div>
     {% for post in posts %}
     <div>
-        <small>@{{post.author}} | {{post.created_on|timesince}}</small>
+        <small><a href="{% url 'user-profile' post.author.id%}">@{{post.author}}</a> | {{post.created_on|timesince}}</small>
         <small>replied to "{{post.room}}"</small>
         <p>{{post}}</p>
         {% if request.user == post.author %}
