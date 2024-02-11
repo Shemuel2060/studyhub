@@ -37,7 +37,7 @@ class Post(models.Model): # messages model
     
     
     def __str__(self):
-        return str(self.author)
+        return str(self.body)[0:20]+' ...'
 
     
 # class Participant(models.Model):

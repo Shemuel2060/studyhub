@@ -24,6 +24,9 @@
             {% for post in room_posts %}
     
             <div class="post">
+                {% if request.user == post.author %}
+                    <a href="{% url 'delete-post' post.id %}">Delete</a>
+                {% endif %}
                 <small>@{{post.author}} | {{post.created_on|timesince}} ago</small>
                 <p>{{post.body}}</p>
                 <hr/>

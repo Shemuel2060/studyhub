@@ -113,6 +113,20 @@ def room(request, pk):
         
     return render(request, 'Rooms/room.html',context)
 
+@login_required(login_url='login') # if not logged in, can't delete post, redirect to login
+def deletePost(request, pk):
+    """delete post created by user."""
+    post = Post.objects.get(id=pk) # get the post.
+    
+    # restrict non owner from deleting a room
+    if request.user != post.author:
+        return HttpResponse('You CANNOT delete since you are not the owner')
+      
+    if request.method == 'POST':
+        post.delete() # delete from db
+        return redirect('home') # redirect to home page (better to go to room)
+    return render(request, 'Rooms/delete.html',{'obj':post})
+
 def loginPage(request):
     """login page..."""
     page = 'login' # used to determine if to render login page or register page.
@@ -184,13 +198,15 @@ def home(request):
         Q(name__icontains = q) | # room name
         Q(description__icontains = q) # room description
     )
+    posts = Post.objects.all().order_by('-created_on') # get all posts..
     roomcount = rooms.count() # get total rooms
     topiccount = topics.count() # get total topics
     context = {
         'allrooms':rooms, 
         'alltopics':topics, 
         'roomcount':roomcount,
-        'topiccount':topiccount}
+        'topiccount':topiccount,
+        'posts':posts}
     return render(request, 'Rooms/home.html', context)
 
 # def createForm(request):
