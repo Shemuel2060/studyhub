@@ -66,10 +66,11 @@ def room(request, pk):
     """handle rooms"""
     # APPROACH 1: Till able to post comments in a room - working with the single room
     roomy = Room.objects.get(id=pk) # get this room
+    participants = roomy.participants.all() # get all participants
     
     # get posts in a room
-    # room_posts = room.post_set.all().order_by('-created_on')
-    room_posts = Post.objects.filter(room_id=pk).order_by('-created_on') 
+    room_posts = roomy.post_set.all().order_by('-created_on') # or
+    # room_posts = Post.objects.filter(room_id=pk).order_by('-created_on') 
     
     # create new posts from typed posts in the chat room
     if request.method == 'POST':
@@ -78,9 +79,10 @@ def room(request, pk):
             room = roomy,
             body = request.POST.get('body')
         )
+        roomy.participants.add(request.user) # add logged in user who has posted to the conversation
         return redirect('room', pk=new_post.room.id) # imitate a page refresh.
     
-    context = {'room':roomy, 'room_posts':room_posts}
+    context = {'room':roomy, 'room_posts':room_posts, 'participants':participants}
     
     # APPROACH 2: Till able to post comments in a room- Picking single room from all rooms
     

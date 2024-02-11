@@ -17,7 +17,8 @@ class Room(models.Model):
     name = models.CharField(max_length=200) # name of the room
     created = models.DateTimeField(auto_now_add=True) # created once
     updated= models.DateTimeField(auto_now=True) # changed
-    participants = ... # participants in the room
+    # participants in the room in a M:M relationship
+    participants = models.ManyToManyField(User, related_name='participants', blank=True) 
   
     class Meta:
         ordering = ['-updated', '-created'] # ordered based on those fields
