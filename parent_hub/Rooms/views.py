@@ -64,30 +64,50 @@ def deleteRoom(request, pk):
     
 def room(request, pk):
     """handle rooms"""
+    # APPROACH 1: Till able to post comments in a room - working with the single room
+    roomy = Room.objects.get(id=pk) # get this room
     
-    rooms = Room.objects.all()
-    allrooms = {'allrooms':rooms}
-    # get messages in a room and order them in last posted
-    # room_posts = rooms.post_set.all() # get all messages in a given room
-     # get posts for this room
+    # get posts in a room
+    # room_posts = room.post_set.all().order_by('-created_on')
     room_posts = Post.objects.filter(room_id=pk).order_by('-created_on') 
     
-    
+    # create new posts from typed posts in the chat room
     if request.method == 'POST':
         new_post = Post.objects.create(
             author = request.user,
-            room = Room.objects.get(id=pk),
+            room = roomy,
             body = request.POST.get('body')
         )
         return redirect('room', pk=new_post.room.id) # imitate a page refresh.
     
-    for aroom in allrooms['allrooms']:
-        room_id = aroom.id
-        if room_id == int(pk):
-            context = {'room':aroom, 'room_posts':room_posts}
-            break
-        else:
-            context={'room':'Welcome to Rooms'}
+    context = {'room':roomy, 'room_posts':room_posts}
+    
+    # APPROACH 2: Till able to post comments in a room- Picking single room from all rooms
+    
+    # rooms = Room.objects.all()
+    # allrooms = {'allrooms':rooms}
+    # # get messages in a room and order them in last posted
+    # # room_posts = room.post_set.all() # get all messages in a given room
+    #  # get posts for this room
+    # room_posts = Post.objects.filter(room_id=pk).order_by('-created_on') 
+    
+    
+    # if request.method == 'POST':
+    #     new_post = Post.objects.create(
+    #         author = request.user,
+    #         room = Room.objects.get(id=pk),
+    #         body = request.POST.get('body')
+    #     )
+    #     return redirect('room', pk=new_post.room.id) # imitate a page refresh.
+    
+    # getting specific room from all rooms.
+    # for aroom in allrooms['allrooms']:
+    #     room_id = aroom.id
+    #     if room_id == int(pk):
+    #         context = {'room':aroom, 'room_posts':room_posts}
+    #         break
+    #     else:
+    #         context={'room':'Welcome to Rooms'}
         
     return render(request, 'Rooms/room.html',context)
 

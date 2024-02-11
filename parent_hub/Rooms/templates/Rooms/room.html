@@ -2,30 +2,52 @@
 {% extends 'parent_hub/base.html' %}
 
 {% block content %}
-    <h1>{{room.name}}</h1>   
-    <p>HOSTED BY</p> 
-    <small>@{{room.host}} {{room.created|timesince}}</small>
-    <p>{{room.description}}</p>
-    <div class="comment-wrapper">
-        <h3>CONVERSATION</h3>
-        <hr>
-        {% for post in room_posts %}
+<style>
+    .room-container{
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+</style>
+<div class="room-container">
 
-        <div class="post">
-            <small>@{{post.author}} | {{post.created_on|timesince}}</small>
-            <p>{{post.body}}</p>
-            <hr/>
-            
+    <div class="">
+        <div class="room-info">
+            <h1>{{room.name}}</h1>   
+            <p>HOSTED BY</p> 
+            <!--include profile pics/avatars of creator.-->
+            <small>@{{room.host}} {{room.created|timesince}} ago</small>
+            <p>{{room.description}}</p>
         </div>
-        {% endfor %}
+        <div class="comment-wrapper">
+            <h3>CONVERSATION</h3>
+            <hr>
+            {% for post in room_posts %}
+    
+            <div class="post">
+                <small>@{{post.author}} | {{post.created_on|timesince}} ago</small>
+                <p>{{post.body}}</p>
+                <hr/>
+                
+            </div>
+            {% endfor %}
+        </div>
+        {% if request.user.is_authenticated  %}
+            <div class="comment-form">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="text" placeholder="write your post here..." name="body">
+                </form>
+                <br>
+            </div>
+        {% endif %}
+
     </div>
-    {% if request.user.is_authenticated  %}
-        <div class="comment-form">
-            <form action="" method="POST">
-                {% csrf_token %}
-                <input type="text" placeholder="write your post here..." name="body">
-            </form>
-            <br>
-        </div>
-    {% endif %}
+    <div class="room-participants">
+        <h3>Participants</h3>
+        <hr>
+
+    </div>
+    
+
+</div>
 {% endblock %}
