@@ -5,7 +5,7 @@
 <style>
     .home-container{
         display: grid;
-        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-columns: 1fr 3fr 1fr;
     }
 </style>
 <div class="home-container">
@@ -47,15 +47,18 @@
 
     </div>
     <div class="activity-feed-sidebar">
-        <h3>RECENT ACTIVITY</h3>
+        <h3>Recent Activity</h3>
         <hr>
         <div>
             {% for post in posts %}
-
-            <h5>@{{post.author}} | {{post.created_on|timesince}}</h5>
-            <p>replied to "{{post.room}}"</p>
             <div>
-                <p>{{post.body}}</p>
+                <small>@{{post.author}} | {{post.created_on|timesince}}</small>
+                <small>replied to "{{post.room}}"</small>
+                <p>{{post}}</p>
+                {% if request.user == post.author %}
+                    <a href="{% url 'delete-post' post.id %}">Delete</a>
+                {% endif %}
+                <hr>
             </div>
 
             {% endfor %}

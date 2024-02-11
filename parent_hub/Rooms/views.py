@@ -198,7 +198,7 @@ def home(request):
         Q(name__icontains = q) | # room name
         Q(description__icontains = q) # room description
     )
-    posts = Post.objects.all().order_by('-created_on') # get all posts..
+    posts = Post.objects.all().filter(Q(room__topic__name__icontains=q)) # get all posts.. can filter here
     roomcount = rooms.count() # get total rooms
     topiccount = topics.count() # get total topics
     context = {

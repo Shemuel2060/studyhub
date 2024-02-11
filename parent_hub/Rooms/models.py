@@ -33,11 +33,13 @@ class Post(models.Model): # messages model
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     body = models.TextField()
     created_on= models.DateTimeField(auto_now_add=True) # date post created
-    last_edited_on= models.DateTimeField(auto_now=True) # date last edited
+    updated_on= models.DateTimeField(auto_now=True) # date last edited
     
-    
+    class Meta:
+        ordering = ['-updated_on', '-created_on'] # ordered based on those fields
+        
     def __str__(self):
-        return str(self.body)[0:20]+' ...'
+        return str(self.body)[0:50]+' ...'
 
     
 # class Participant(models.Model):
