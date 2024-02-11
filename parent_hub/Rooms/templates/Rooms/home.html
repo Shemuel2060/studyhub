@@ -10,59 +10,18 @@
 </style>
 <div class="home-container">
     <div class="topics-sidebar">
-        <h3>Browse Topics</h3>
-        <hr>
-        <div>
-            <!--displays all topics, rooms and creators ... in the home feed. -->
-            <h5><a href="{% url 'home' %}">All</a></h5>
-            <h6>Total: {{topiccount}} topics</h6>
-        </div>
-        {% for topic in alltopics %}       
-        <div>
-            <!--link gives access to the GET query string value, q
-            display filtered topics-->
-            <h5><a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h5>
-        </div>
-            
-            
-        {% endfor %}
+        {% include 'Rooms/topics_feed.html' %}
     </div>
     <div class="topics-view-main">
         <h3>Study Rooms</h3>
         <h5>Total: {{roomcount}} rooms</h5>
         <a href="{% url 'room-create' %}">Create Room</a>
         <hr>
-        {% for room in allrooms %}
-        <!--routing to the room of the topic...-->
-            <!--show these to only the owner of the room (and superuser/admin ) and not to non-owners-->
-            {% if request.user ==  room.host %}
-                <a href="{% url 'update-room' room.id %}">Update Room</a>
-                <a href="{% url 'delete-room' room.id %}">Delete Room</a>
-            {% endif %}
-            <span>@{{room.host.username}}</span>
-            <p>{{room.id}} --- <a href="{% url 'room' room.id %}">{{room.name}}</a></p>
-            <small>{{room.topic.name}}</small>
-            <hr/>
-        {% endfor %}
-
+        {% include 'Rooms/rooms_feed.html' %}
+        
     </div>
     <div class="activity-feed-sidebar">
-        <h3>Recent Activity</h3>
-        <hr>
-        <div>
-            {% for post in posts %}
-            <div>
-                <small>@{{post.author}} | {{post.created_on|timesince}}</small>
-                <small>replied to "{{post.room}}"</small>
-                <p>{{post}}</p>
-                {% if request.user == post.author %}
-                    <a href="{% url 'delete-post' post.id %}">Delete</a>
-                {% endif %}
-                <hr>
-            </div>
-
-            {% endfor %}
-        </div>
+      {% include 'Rooms/activity_feed.html' %}
     </div>
 </div>
     

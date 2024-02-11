@@ -1,0 +1,16 @@
+<h3>Browse Topics</h3>
+        <hr>
+        <div>
+            <!--displays all topics, rooms and creators ... in the home feed. -->
+            <h5><a href="{% url 'home' %}">All</a></h5>
+            <h6>Total: {{topiccount}} topics</h6>
+        </div>
+        {% for topic in alltopics %}       
+        <div>
+            <!--link gives access to the GET query string value, q
+            display filtered topics-->
+            <h5><a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h5>
+        </div>
+            
+            
+        {% endfor %}

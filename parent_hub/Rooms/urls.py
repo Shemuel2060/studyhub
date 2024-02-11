@@ -9,6 +9,7 @@ urlpatterns = [
     path('',views.home, name='home'),
     # dynamic routing to rooms of topics clicked.
     path('room/<str:pk>/',views.room, name='room'),
+    path('profile/<str:pk>/', views.userProfile, name='user-profile'),
     
     
     # path('create-room', views.createForm, name='create-room'),

@@ -61,6 +61,10 @@ def deleteRoom(request, pk):
         room.delete() # delete from db
         return redirect('home') # redirect to home page
     return render(request, 'Rooms/delete.html',{'obj':room})
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    context={'participant':user}
+    return render(request, 'Rooms/profile.html', context)
     
 def room(request, pk):
     """handle rooms"""
