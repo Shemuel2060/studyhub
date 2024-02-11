@@ -8,6 +8,24 @@
     <p>{{room.description}}</p>
     <div class="comment-wrapper">
         <h3>CONVERSATION</h3>
+        <hr>
+        {% for post in room_posts %}
 
+        <div class="post">
+            <small>@{{post.author}} | {{post.created_on|timesince}}</small>
+            <p>{{post.body}}</p>
+            <hr/>
+            
+        </div>
+        {% endfor %}
     </div>
+    {% if request.user.is_authenticated  %}
+        <div class="comment-form">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="write your post here..." name="body">
+            </form>
+            <br>
+        </div>
+    {% endif %}
 {% endblock %}

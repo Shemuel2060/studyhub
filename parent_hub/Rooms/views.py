@@ -68,13 +68,26 @@ def room(request, pk):
     rooms = Room.objects.all()
     allrooms = {'allrooms':rooms}
     # get messages in a room and order them in last posted
-    # room_messages = room.post_set.all()
+    # room_posts = rooms.post_set.all() # get all messages in a given room
+     # get posts for this room
+    room_posts = Post.objects.filter(room_id=pk).order_by('-created_on') 
+    
+    
+    if request.method == 'POST':
+        new_post = Post.objects.create(
+            author = request.user,
+            room = Room.objects.get(id=pk),
+            body = request.POST.get('body')
+        )
+        return redirect('room', pk=new_post.room.id) # imitate a page refresh.
+    
     for aroom in allrooms['allrooms']:
-        if aroom.id == int(pk):
-            context = {'room':aroom}
+        room_id = aroom.id
+        if room_id == int(pk):
+            context = {'room':aroom, 'room_posts':room_posts}
             break
         else:
-            context={'room':'Welcome to Rooms', 'room_messages':room_messages}
+            context={'room':'Welcome to Rooms'}
         
     return render(request, 'Rooms/room.html',context)
 
