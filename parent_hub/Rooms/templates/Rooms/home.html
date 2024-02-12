@@ -14,10 +14,6 @@
             {% include 'Rooms/topics_feed.html' %}
         </div>        
         <div class="topics-view-main">
-            <h3>Study Rooms</h3>
-            <h5>Total: {{roomcount}} rooms</h5>
-            <a href="{% url 'room-create' %}">Create Room</a>
-            <hr>
             {% include 'Rooms/rooms_feed.html' %}            
         </div>
         <div class="activity-feed-sidebar">
