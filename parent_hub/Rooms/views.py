@@ -17,7 +17,9 @@ def create_room(request):
     """for rendering the create room form."""
     form = createRoomForm(request.POST or None) # initialize the form
     if form.is_valid():
-        form.save()
+        room = form.save(commit=False) # get room before committing to db
+        room.host = request.user # host is the logged in user creating the room
+        form.save() # saave form with committing to db
         form = createRoomForm() # to clear form fields
         return redirect('home') # after form submission, redirect to home page.
         
