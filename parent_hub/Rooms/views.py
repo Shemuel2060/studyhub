@@ -63,7 +63,11 @@ def deleteRoom(request, pk):
     return render(request, 'Rooms/delete.html',{'obj':room})
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
-    context={'participant':user}
+    rooms = user.room_set.all() # get all rooms user is in
+    posts = user.post_set.all() # get all posts for this user
+    topics = Topic.objects.all() # get all topics 
+    context={'participant':user, 'allrooms':rooms, 
+             'alltopics':topics, 'posts':posts}
     return render(request, 'Rooms/profile.html', context)
     
 def room(request, pk):

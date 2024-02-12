@@ -1,6 +1,25 @@
 {% extends 'parent_hub/base.html' %}
 
 {% block content%}
-<h1>Hi, I am {{participant.username}}</h1>
+<style>
+    .profile-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+<div class="profile-container">
+    <div class="topics-sidebar">
+        {% include 'Rooms/topics_feed.html' %}
+    </div>
+    <div class="topics-view-main">
+        <h3>{{participants.username}}</h3>
+        {% include 'Rooms/rooms_feed.html' %}
+        
+    </div>
+    <div class="activity-feed-sidebar">
+      {% include 'Rooms/activity_feed.html' %}
+    </div>
+
+</div>
 
 {% endblock %}
