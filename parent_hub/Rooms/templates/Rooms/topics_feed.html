@@ -10,7 +10,7 @@
       {% for topic in alltopics %}    
       <li>
         <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}} <span>
-            {{topiccount}}</span></a>
+            {{topic.room_set.all.count}}</span></a>
       </li>
       {% endfor %}
     </ul>

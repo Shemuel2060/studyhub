@@ -7,19 +7,50 @@
         grid-template-columns: 1fr 3fr 1fr;
     }
 </style>
-<div class="profile-container">
-    <div class="topics-sidebar">
-        {% include 'Rooms/topics_feed.html' %}
-    </div>
-    <div class="topics-view-main">
-        <h3>{{participants.username}}</h3>
-        {% include 'Rooms/rooms_feed.html' %}
-        
-    </div>
-    <div class="activity-feed-sidebar">
-      {% include 'Rooms/activity_feed.html' %}
-    </div>
 
-</div>
+<main class="profile-page layout layout--3">
+    <div class="container">
+      <!-- Topics Start -->
+      {% include 'Rooms/topics_feed.html' %}
+      <!-- Topics End -->
+
+      <!-- Room List Start -->
+      <div class="roomList">
+        <div class="profile">
+          <div class="profile__avatar">
+            <div class="avatar avatar--large active">
+              <img src="https://randomuser.me/api/portraits/men/11.jpg" />
+            </div>
+          </div>
+          <div class="profile__info">
+            <h3>{{participant.username}}</h3>
+            <p>@{{participant.username}}</p>
+            <a href="edit-user.html" class="btn btn--main btn--pill">Edit Profile</a>
+          </div>
+          <div class="profile__about">
+            <h3>About</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur illo tenetur
+              facilis sunt nemo debitis quisquam hic atque aut? Ducimus alias placeat optio
+              accusamus repudiandae quis ab ex exercitationem rem?
+            </p>
+          </div>
+        </div>
+
+        <div class="roomList__header">
+          <div>
+            <h2>Study Rooms Hosted by {{participant.username}}</a>
+            </h2>
+          </div>
+        </div>
+        {% include 'Rooms/rooms_feed.html' %}
+      </div>
+      <!-- Room List End -->
+
+      <!-- Activities Start -->
+      {% include 'Rooms/activity_feed.html' %}
+      <!-- Activities End -->
+    </div>
+  </main>
 
 {% endblock %}

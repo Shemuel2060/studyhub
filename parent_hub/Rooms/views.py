@@ -68,8 +68,9 @@ def userProfile(request, pk):
     rooms = user.room_set.all() # get all rooms user is in
     posts = user.post_set.all() # get all posts for this user
     topics = Topic.objects.all() # get all topics 
+    topiccount = topics.count() # total topics
     context={'participant':user, 'allrooms':rooms, 
-             'alltopics':topics, 'posts':posts}
+             'alltopics':topics, 'topiccount':topiccount, 'posts':posts}
     return render(request, 'Rooms/profile.html', context)
     
 def room(request, pk):
