@@ -82,6 +82,7 @@ def room(request, pk):
     # get posts in a room
     room_posts = roomy.post_set.all().order_by('-created_on') # or
     # room_posts = Post.objects.filter(room_id=pk).order_by('-created_on') 
+    room_topics = roomy.topic # get all topics in this room???
     
     # create new posts from typed posts in the chat room
     if request.method == 'POST':
@@ -93,7 +94,8 @@ def room(request, pk):
         roomy.participants.add(request.user) # add logged in user who has posted to the conversation
         return redirect('room', pk=new_post.room.id) # imitate a page refresh.
     
-    context = {'room':roomy, 'room_posts':room_posts, 'participants':participants}
+    context = {'room':roomy, 'room_posts':room_posts, 
+               'participants':participants, 'room_topics': room_topics}
     
     # APPROACH 2: Till able to post comments in a room- Picking single room from all rooms
     
