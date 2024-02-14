@@ -9,21 +9,31 @@ from django.contrib.auth.decorators import login_required # restrict access and 
 from django.contrib.auth.forms import UserCreationForm
 
 from .models import Topic, Room, Post
-from .forms import createRoomForm
+from .forms import createRoomForm, UserForm
 # Create your views here.
 
 @login_required(login_url='login') # if not logged in, can't create room, redirect to login
 def create_room(request):
     """for rendering the create room form."""
     form = createRoomForm(request.POST or None) # initialize the form
-    if form.is_valid():
-        room = form.save(commit=False) # get room before committing to db
-        room.host = request.user # host is the logged in user creating the room
-        form.save() # saave form with committing to db
-        form = createRoomForm() # to clear form fields
+    topics = Topic.objects.all() # get all topics in the db
+   
+    if request.method=='POST':
+        topic_name = request.POST.get('topic') # chosen topic
+        # get chosen or created topics from the client   
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        # topic - already there, created - new topic    
+    
+        # create room using posted data
+        Room.objects.create(
+            host = request.user,
+            topic = topic, 
+            name = request.POST.get('name'),
+            description = request.POST.get('description')        
+        )
         return redirect('home') # after form submission, redirect to home page.
         
-    context = {'form':form}
+    context = {'form':form, 'topics':topics}
     return render(request,'Rooms/room_form.html', context)
 
 
@@ -32,21 +42,28 @@ def update_room(request, pk):
     """for updating the create room form."""
     # get room to update by its pk
     room = Room.objects.get(id=pk)
-    # create an instance of that form attached to that room
-    
+    # create an instance of that form attached to that room    
+    topics = Topic.objects.all() # get all topics.
+    form = createRoomForm(instance=room)     
     # restrict non owner from updating a room
     if request.user != room.host:
         return HttpResponse('You CANNOT delete since you are not the owner')
     
-    form = createRoomForm(instance=room) 
-    if request.method == 'POST':
-        # pre-populate form with data from that room
-        form = createRoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save()            
-            return redirect('home') # after form submission, redirect to home page.
+    if request.method == 'POST':        
+        # get chosen or created topics from the client   
+        topic, created = Topic.objects.get_or_create(name=request.POST.get('topic'))
+        # topic - already there, created - new topic            
+            
+        # update room        
+        room.name = request.POST.get('name')
+        room.topic = topic
+        room.description = request.POST.get('description')
         
-    context = {'form':form}
+        room.save() # save the updated room
+        
+        return redirect('home') # after form submission, redirect to home page.
+        
+    context = {'form':form, 'topics':topics, 'room':room}
     return render(request,'Rooms/room_form.html', context)
 
 @login_required(login_url='login') # if not logged in, can't delete room, redirect to login
@@ -222,7 +239,16 @@ def home(request):
         'posts':posts}
     return render(request, 'Rooms/home.html', context)
 
-# def createForm(request):
-#     """create and update a room"""
-#     context = {}
-#     return render(request,'Rooms/room_form.html', context)
+def editUser(request):
+    """edit user profile"""
+    user = request.user
+    form = UserForm(instance=user) # initialize the form 
+    
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user) # add the data to the form
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk = user.id)
+    
+    context ={'form':form, 'user':user}
+    return render(request,'Rooms/edit-user.html', context)

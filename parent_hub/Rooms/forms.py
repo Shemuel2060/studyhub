@@ -1,5 +1,6 @@
 from django import forms 
 from .models import Room
+from django.contrib.auth.models import User
 
 class createRoomForm(forms.ModelForm):
     """For creating a form"""
@@ -18,3 +19,8 @@ class createRoomForm(forms.ModelForm):
         exclude = ['host', 'participants'] # excludes the listed ones.
 
 # add other forms here...
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
