@@ -233,7 +233,7 @@ def home(request):
     topiccount = topics.count() # get total topics
     context = {
         'allrooms':rooms, 
-        'alltopics':topics, 
+        'alltopics':topics[0:10], # show only 10 topics
         'roomcount':roomcount,
         'topiccount':topiccount,
         'posts':posts}
@@ -252,3 +252,17 @@ def editUser(request):
     
     context ={'form':form, 'user':user}
     return render(request,'Rooms/edit-user.html', context)
+
+def mobileTopicsPage(request):
+    """ displays topics on mobile page."""
+    q = request.GET.get('q') if request.GET.get('q')!=None else ''
+    topics = Topic.objects.filter(name__icontains = q)
+    context = {'topics': topics}
+    return render(request, 'Rooms/topics.html', context)
+
+def mobileActivitiesPage(request):
+    """displays activities on mobile page"""
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    
+    return render(request, 'Rooms/activities.html', context)

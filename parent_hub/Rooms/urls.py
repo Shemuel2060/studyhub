@@ -19,5 +19,9 @@ urlpatterns = [
     path('delete-post/<str:pk>/', views.deletePost, name='delete-post'),
     
     
-    path('edit-user', views.editUser, name='edit-user')
+    path('edit-user', views.editUser, name='edit-user'),
+    
+    path('topics', views.mobileTopicsPage, name='topics'),
+    path('activities', views.mobileActivitiesPage, name='activities'),
+    
 ]
