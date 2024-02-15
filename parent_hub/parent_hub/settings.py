@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     
     # own apps
     'Rooms', # Or 'Rooms.apps.RoomsConfig' works also
+    
+    # third-party apps
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

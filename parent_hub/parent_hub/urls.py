@@ -21,4 +21,5 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('Rooms.urls')), # include all urls from the Rooms app
+    path('api/',include('Rooms.api.urls'))
 ]
