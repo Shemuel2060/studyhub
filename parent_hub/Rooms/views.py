@@ -6,10 +6,10 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required # restrict access and permissions
-from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.forms import UserCreationForm
 
 from .models import Topic, Room, Post, User
-from .forms import createRoomForm, UserForm
+from .forms import createRoomForm, UserForm, NewUserCreationForm
 # Create your views here.
 
 @login_required(login_url='login') # if not logged in, can't create room, redirect to login
@@ -189,10 +189,10 @@ def loginPage(request):
 
 def registerPage(request):
     # initialize the registration form to be seen when empty
-    form = UserCreationForm()
+    form = NewUserCreationForm()
     if request.method == 'POST':
         # pass the data to the form
-        form = UserCreationForm(request.POST)
+        form = NewUserCreationForm(request.POST, request.FILES)
         # check if form is valid
         if form.is_valid():
             # save form without committing it, clean user data
@@ -245,7 +245,7 @@ def editUser(request):
     form = UserForm(instance=user) # initialize the form 
     
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user) # add the data to the form
+        form = UserForm(request.POST, request.FILES, instance=user) # add the data to the form
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk = user.id)

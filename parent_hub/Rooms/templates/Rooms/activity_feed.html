@@ -10,7 +10,7 @@
     <div class="activities__boxHeader roomListRoom__header">
       <a href="{% url 'user-profile' post.author.id %}" class="roomListRoom__author">
         <div class="avatar avatar--small">
-          <img src="https://randomuser.me/api/portraits/women/11.jpg" />
+          <img src="{{post.author.avatar.url}}" />
         </div>
         <p>@{{post.author}}<span>{{post.created_on|timesince}}</span></p>
       </a>

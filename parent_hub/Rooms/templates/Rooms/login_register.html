@@ -72,7 +72,7 @@
        <div class="layout__body">
          <h2 class="auth__tagline">Learn and share with friends</h2>
 
-         <form class="form" method = "POST" action=""><!--redirect to same page on submit-->
+         <form class="form" method = "POST" action="" enctype="multipart/form-data"><!--redirect to same page on submit-->
             {% csrf_token %}
             {% for field in form %}
            <div class="form__group form__group">
